@@ -27,7 +27,7 @@ export default function Inicio() {
           variant="contained"
           color="warning"
           sx={{ mt: 3, px: 4 }}
-          href="https://github.com/TU-USUARIO/TU-REPO"
+          href="https://github.com/Julijulip/definitivo3"
           target="_blank"
         >
           🚀 Ver código en GitHub
