@@ -4,18 +4,41 @@ import { TextField, Button, Box, Typography, Paper } from "@mui/material";
 export default function MiCuenta() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [error, setError] = useState("");
+
+  const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState("");
+
+  const validateEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const validatePassword = (pass) => {
+    // mínimo 6 caracteres + al menos 1 número (más realista)
+    return pass.length >= 6 && /\d/.test(pass);
+  };
 
   const handleLogin = () => {
-    if (!email.includes("@")) {
-      setError("Correo inválido");
-      return;
+    let newErrors = {};
+    setSuccess("");
+
+    if (!email) {
+      newErrors.email = "El correo es obligatorio";
+    } else if (!validateEmail(email)) {
+      newErrors.email = "Correo inválido";
     }
-    if (pass.length < 4) {
-      setError("Contraseña muy corta");
-      return;
+
+    if (!pass) {
+      newErrors.pass = "La contraseña es obligatoria";
+    } else if (!validatePassword(pass)) {
+      newErrors.pass =
+        "La contraseña debe tener mínimo 6 caracteres y un número";
     }
-    setError("Login exitoso ✅");
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      setSuccess("Login exitoso ✅");
+    }
   };
 
   return (
@@ -27,14 +50,22 @@ export default function MiCuenta() {
         alignItems: "center",
       }}
     >
-      <Paper sx={{ p: 4, width: 300 }}>
-        <Typography variant="h5">Iniciar Sesión</Typography>
+      <Paper sx={{ p: 4, width: 320, borderRadius: 3 }}>
+        <Typography variant="h5" sx={{ mb: 2 }}>
+          Iniciar Sesión
+        </Typography>
 
         <TextField
           fullWidth
           label="Correo"
           margin="normal"
-          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          error={!!errors.email}
+          helperText={errors.email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setErrors((prev) => ({ ...prev, email: "" }));
+          }}
         />
 
         <TextField
@@ -42,7 +73,13 @@ export default function MiCuenta() {
           label="Contraseña"
           type="password"
           margin="normal"
-          onChange={(e) => setPass(e.target.value)}
+          value={pass}
+          error={!!errors.pass}
+          helperText={errors.pass}
+          onChange={(e) => {
+            setPass(e.target.value);
+            setErrors((prev) => ({ ...prev, pass: "" }));
+          }}
         />
 
         <Button
@@ -50,13 +87,16 @@ export default function MiCuenta() {
           variant="contained"
           color="warning"
           onClick={handleLogin}
+          sx={{ mt: 2 }}
         >
           Entrar
         </Button>
 
-        <Typography color="error" sx={{ mt: 2 }}>
-          {error}
-        </Typography>
+        {success && (
+          <Typography color="success.main" sx={{ mt: 2 }}>
+            {success}
+          </Typography>
+        )}
       </Paper>
     </Box>
   );
