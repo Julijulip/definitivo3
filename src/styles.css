@@ -1,29 +1,59 @@
+/* RESET */
 body {
   font-family: Arial;
   margin: 0;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  background: #ffcc00;
-  padding: 15px;
-}
+/* 🔥 ELIMINAMOS .navbar (ya usas MUI) */
 
-.navbar a {
-  margin: 10px;
-  text-decoration: none;
-  color: black;
-}
-
+/* GRID */
 .grid {
   display: flex;
   gap: 20px;
   padding: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
+/* TARJETAS */
 .card {
   border: 1px solid #ddd;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 12px;
+  width: 300px;
+  box-sizing: border-box;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* efecto bonito */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* 📱 CELULARES */
+@media (max-width: 600px) {
+  .grid {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .card {
+    width: 95%;
+  }
+}
+
+/* 📱 TABLETS */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .card {
+    width: 45%;
+  }
+}
+
+/* 💻 PANTALLAS GRANDES */
+@media (min-width: 1025px) {
+  .card {
+    width: 300px;
+  }
 }
